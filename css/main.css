@@ -1,0 +1,134 @@
+
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #666666;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: #f2f2f2 url(../img/bg.png) repeat-x;
+    height: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+h3 {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #efefef;
+}
+
+#logo {
+    float: left;
+    width: 300px;
+}
+
+.border_outer {
+    width: 1000px;
+    border: 0 solid black;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+
+.page {
+    border: 1px solid #dddddd;
+    background-color: white;
+    padding: 0px 20px;
+    min-height: 200px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    behavior:url(border-radius.htc);
+}
+
+.page p {
+    letter-spacing: 0;
+}
+
+
+.buttonbar {
+    border: 1px solid #dddddd;
+    background-color: white;
+    padding: 0 20px;
+    height: 50px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    behavior:url(border-radius.htc);
+    margin-bottom: 10px;
+}
+
+
+.bottom_wrapper {
+    min-height: 120px;
+    padding-top: 20px;
+    font-size: smaller;
+}
+
+.bottom_wrapper a {
+    color: #666666;
+    text-decoration: none
+}
+
+.bottom_wrapper a:hover {
+    color: #333333;
+}
+
+.bottom_wrapper2 { background: url(../img/bottom.png) repeat-x bottom; }
+.bottom_listing { width: 800px; text-align: left; margin-left: auto; margin-right: auto; }
+.copy { padding-bottom: 20px; font-size: 10px; }
+.breadcrumb { font-size: 12px; margin-top: 8px; }
+
+.breadcrumb a {
+    color: #2e89e4;
+    text-decoration: none;
+    padding-right: 5px;
+    padding-left: 5px;
+    font-weight: bold;
+}
+
+
+.wrapper_login {
+    float: right;
+    padding:  0;
+    padding-top: 6px;
+    margin: 0;
+    height: 16px;
+}
+
+.wrapper_login input {
+    padding: 0; margin: 0;
+}
+
+input[type=text], input[type=password] {
+    color: #666666;
+    background-color: white;
+    border: solid 1px #999;
+    padding-left: 3px;
+    width: 100px;
+}
+
+input[type=button] {
+    color: #666666;
+    background-color: #d4e2fe;
+    border: solid 1px #999;
+    padding-left: 3px;
+
+}
