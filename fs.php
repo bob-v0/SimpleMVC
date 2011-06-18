@@ -9,18 +9,6 @@ class ControllerNotFoundException extends Exception { }
 class ActionNotFoundException extends Exception { }
 
 
-function readConfigSettings()
-{
-    if (DEV_ENV) {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 'On');
-    } else {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 'Off');
-        ini_set('log_errors', 'On');
-        ini_set('error_log', ROOT . DS . 'logs' . DS . 'error.log');
-    }
-}
 
 function setBaseUrl()
 {
@@ -48,7 +36,7 @@ function getUrlQuery()
 try
 {
     setBaseUrl();
-    readConfigSettings();
+    Config::setEnvironmentSettings();
     $query = getUrlQuery();
     $modules = array('default', 'module1'); // todo: naar config
     $route = Route::create($query, $modules);
