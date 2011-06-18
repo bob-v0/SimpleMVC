@@ -1,1 +1,4 @@
 Do _NOT_ use this stuff in _ANY_ production enviroment! :p
+
+PHP settings
+Make sure short_open_tag is off in the php.ini file!
