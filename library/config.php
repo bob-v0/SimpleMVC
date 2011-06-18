@@ -1,5 +1,7 @@
 <?php
 
+if(!BASE_URL) die();
+
 class Config
 {
     public static function setEnvironmentSettings()
