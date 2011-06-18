@@ -38,7 +38,7 @@ try
     setBaseUrl();
     Config::setEnvironmentSettings();
     $query = getUrlQuery();
-    $modules = array('default', 'module1'); // todo: naar config
+    $modules = Config::getModules();
     $route = Route::create($query, $modules);
     echo $route->doAction();
 }

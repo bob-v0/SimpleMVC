@@ -20,4 +20,9 @@ class Config {
             ini_set('error_log', ROOT . DS . 'logs' . DS . 'error.log');
         }
     }
+
+    public static function getModules()
+    {
+        return array('default', 'module1'); // todo: fetch from the real cfg
+    }
 }
