@@ -1,83 +1,58 @@
 <?php
-
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 require_once (ROOT . DS . 'config' . DS . 'config.php');
 require_once (ROOT . DS . 'application' . DS . 'bootstrap.php');
 
 
-$pageURL = 'http';
-if (@$_SERVER["HTTPS"] == "on")
-    $pageURL .= "s";
-$pageURL .= "://".$_SERVER["SERVER_NAME"];
-if ($_SERVER["SERVER_PORT"] != "80")
-    $pageURL .= ":".$_SERVER["SERVER_PORT"];
-$pageURL .= str_replace(basename(__FILE__), '', $_SERVER["PHP_SELF"]);
-define('BASE_URL', $pageURL);
-
-
 class ControllerNotFoundException extends Exception { }
 class ActionNotFoundException extends Exception { }
 
 
-if(DEV_ENV) {
-    error_reporting(E_ALL);
-    ini_set('display_errors','On');
-} else {
-    error_reporting(E_ALL);
-    ini_set('display_errors','Off');
-    ini_set('log_errors', 'On');
-    ini_set('error_log', ROOT.DS.'logs'.DS.'error.log');
+function readConfigSettings()
+{
+    if (DEV_ENV) {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 'On');
+    } else {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 'Off');
+        ini_set('log_errors', 'On');
+        ini_set('error_log', ROOT . DS . 'logs' . DS . 'error.log');
+    }
+}
+
+function setBaseUrl()
+{
+    $pageURL = 'http';
+    if (@$_SERVER["HTTPS"] == "on")
+        $pageURL .= "s";
+    $pageURL .= "://" . $_SERVER["SERVER_NAME"];
+    if ($_SERVER["SERVER_PORT"] != "80")
+        $pageURL .= ":" . $_SERVER["SERVER_PORT"];
+    $pageURL .= str_replace(basename(__FILE__), '', $_SERVER["PHP_SELF"]);
+    define('BASE_URL', $pageURL);
+}
+
+
+function getUrlQuery()
+{
+    $url = "";
+    if (isset($_GET['q'])) $url = $_GET['q'];
+    $url = rtrim($url, '/');
+
+    $q = explode('/', $url);
+    return $q;
 }
 
 try
 {
-
-    $url = "";
-    if(isset($_GET['q'])) $url = $_GET['q'];
-    $url = rtrim($url, '/');
-
-    $q = explode('/', $url);
-
-    /////////////////////////////////
-    // routing
-    /////////////////////////////////
-
-    $route['module'] = "default";
-    $route['controller'] = "index";
-    $route['action'] = "index";
-    $route['query'] = null;
-
-
-    global $modules;
+    setBaseUrl();
+    readConfigSettings();
+    $query = getUrlQuery();
     $modules = array('default', 'module1'); // todo: naar config
-    if(!in_array($q[0], $modules))
-        array_unshift($q, 'default');
-
-    $query = array_splice($q, 3);
-
-    $route['module'] = $q[0];
-    if(!empty($q[1])) $route['controller'] = $q[1];
-    if(!empty($q[2])) $route['action'] = $q[2];
-    $route['query'] = $query;
-
-
-    /////////////////////////////////
-    // controller
-    /////////////////////////////////               sdd
-
-    $controller = ucfirst($route['controller'].'Controller');
-    if(!class_exists($controller))
-        throw new ControllerNotFoundException($controller);
-
-    $conObj = new $controller($route['module']);
-    $action = ucfirst($route['action']).'Action';
-    if(!method_exists($conObj, $action))
-        throw new ActionNotFoundException($action);
-
-    $output = $conObj->$action($route['query']);
-
-    echo $output;
+    $route = Route::create($query, $modules);
+    echo $route->doAction();
 }
 
 catch (ActionNotFoundException $ex) {
@@ -89,9 +64,9 @@ catch (ActionNotFoundException $ex) {
 
 catch (ControllerNotFoundException $ex) {
     //echo "todo: throw 404 error - ".$ex->getMessage();
-    $controller = $ex->getMessage();
+    $controllerName = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
-    echo "$controller not found";
+    echo "$controllerName not found";
     die;
 }
 
