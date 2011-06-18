@@ -1,21 +1,28 @@
 <?php
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(__FILE__));
-require_once (ROOT . DS . 'config' . DS . 'config.php');
-require_once (ROOT . DS . 'application' . DS . 'bootstrap.php');
 
 
 class ControllerNotFoundException extends Exception { }
 class ActionNotFoundException extends Exception { }
 
 
+function setDefinitions()
+{
+    define('DS', DIRECTORY_SEPARATOR);
+    define('ROOT', dirname(__FILE__));
+    define('BASE_NAME', basename(__FILE__));
+}
 
 try
 {
+    setDefinitions();
+    require_once (ROOT . DS . 'config' . DS . 'config.php');
+    require_once (ROOT . DS . 'application' . DS . 'bootstrap.php');
+
     $fc = new FrontController();
     $fc->run();
 }
 
+// todo: refector to a single routingexception that describes the problem
 catch (ActionNotFoundException $ex) {
     $action = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
@@ -24,7 +31,6 @@ catch (ActionNotFoundException $ex) {
 }
 
 catch (ControllerNotFoundException $ex) {
-    //echo "todo: throw 404 error - ".$ex->getMessage();
     $controllerName = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
     echo "$controllerName not found";
@@ -32,8 +38,7 @@ catch (ControllerNotFoundException $ex) {
 }
 
 catch (Exception $ex) {
-
-    // place the error control & view to its own handler(s)
+    // todo: place the error control & view to its own handler(s)
     echo "Fatal error: ".$ex->getMessage();
     echo "<hr />\n";
     echo "<pre>StackTrace: \n";

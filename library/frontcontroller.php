@@ -9,9 +9,11 @@ class FrontController
         if (@$_SERVER["HTTPS"] == "on")
             $pageURL .= "s";
         $pageURL .= "://" . $_SERVER["SERVER_NAME"];
+        
         if ($_SERVER["SERVER_PORT"] != "80")
             $pageURL .= ":" . $_SERVER["SERVER_PORT"];
-        $pageURL .= str_replace(basename(__FILE__), '', $_SERVER["PHP_SELF"]);
+        
+        $pageURL .= str_replace(BASE_NAME, '', $_SERVER["PHP_SELF"]);
         define('BASE_URL', $pageURL);
     }
 
