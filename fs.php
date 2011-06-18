@@ -26,7 +26,8 @@ function setBaseUrl()
 function getUrlQuery()
 {
     $url = "";
-    if (isset($_GET['q'])) $url = $_GET['q'];
+    if (isset($_GET['q']))
+        $url = $_GET['q'];
     $url = rtrim($url, '/');
 
     $q = explode('/', $url);
