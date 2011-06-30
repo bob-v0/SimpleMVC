@@ -16,13 +16,13 @@ class View {
     }
 
     public function load($file, $name) {
-        $this->_file[$name] = ROOT.DS.'application'.DS.$this->_module.DS.'view'.DS.$file.'.php';
+        $this->_file[$name] = APPPATH.DS.'application'.DS.$this->_module.DS.'view'.DS.$file.'.php';
         if(!file_exists($this->_file[$name]))
             throw new Exception("The view '$name' could not found");
     }
 
     public function loadTemplate($template) {
-        $this->_template = ROOT.DS.'templates'.DS.$template.'.php';
+        $this->_template = APPPATH.DS.'templates'.DS.$template.'.php';
         if(!file_exists($this->_template))
             throw new Exception("The view '$this->_template' could not found");
     }
