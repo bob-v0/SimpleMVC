@@ -8,7 +8,7 @@ class ActionNotFoundException extends Exception { }
 function setDefinitions()
 {
     define('DS', DIRECTORY_SEPARATOR);
-    define('ROOT', dirname(__FILE__));
+    define('APPPATH', dirname(__FILE__));
     define('BASE_NAME', basename(__FILE__));
 }
 
@@ -30,8 +30,9 @@ try
 {
     setDefinitions();
     setBaseUrl();
-    require_once (ROOT . DS . 'config' . DS . 'config.php');
-    require_once (ROOT . DS . 'application' . DS . 'bootstrap.php');
+    spl_autoload_register('autoLoad');
+    require_once (APPPATH . DS . 'config' . DS . 'config.php');
+    require_once (APPPATH . DS . 'application' . DS . 'bootstrap.php');
 
     $fc = new FrontController();
     $fc->run();
@@ -49,7 +50,7 @@ catch (ControllerNotFoundException $ex) {
     $controllerName = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
     echo "$controllerName not found";
-    die;
+die;
 }
 
 catch (Exception $ex) {
@@ -61,7 +62,48 @@ catch (Exception $ex) {
 }
 
 
-function __autoload($className) {
+
+
+
+function autoLoad($className)
+{
+    static $path = null;
+    if($path == null)
+        $path = APPPATH;
+
+    autoLoader($className, APPPATH);
+}
+
+function autoLoader($className, $path)
+{
+
+    $handle = opendir($path);
+    while (false !== ($file = readdir($handle))) {
+
+        // ignore hidden directories, the current directory and the parent directory.
+        if(strncmp($file, ".", 1) == 0)
+            continue;
+
+        if(!is_dir($path.DS.$file))
+        {
+            if(file_exists(strtolower($path.DS.$className).'.php'))
+            {
+                require_once(strtolower($path.DS.$className).'.php');
+            }
+
+            if(file_exists(strtolower($path.DS.preg_replace("/Controller$/","",$className)).'.php'))
+            {
+                require_once(strtolower($path.DS.preg_replace("/Controller$/","",$className)).'.php');
+            }
+            continue;
+        }
+
+        autoLoader($className, $path.DS.$file);
+    }
+    closedir($handle);
+}
+
+function __autoload2($className) {
 
     // todo: refactor to dynamically include subdirectories
     $file = ROOT.DS.'library'.DS.strtolower($className) . '.php';
