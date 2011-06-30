@@ -12,9 +12,24 @@ function setDefinitions()
     define('BASE_NAME', basename(__FILE__));
 }
 
+function setBaseUrl()
+{
+    $pageURL = 'http';
+    if (@$_SERVER["HTTPS"] == "on")
+        $pageURL .= "s";
+    $pageURL .= "://" . $_SERVER["SERVER_NAME"];
+
+    if ($_SERVER["SERVER_PORT"] != "80")
+        $pageURL .= ":" . $_SERVER["SERVER_PORT"];
+
+    $pageURL .= str_replace(BASE_NAME, '', $_SERVER["PHP_SELF"]);
+    define('BASE_URL', $pageURL);
+}
+
 try
 {
     setDefinitions();
+    setBaseUrl();
     require_once (ROOT . DS . 'config' . DS . 'config.php');
     require_once (ROOT . DS . 'application' . DS . 'bootstrap.php');
 
