@@ -50,7 +50,7 @@ catch (ControllerNotFoundException $ex) {
     $controllerName = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
     echo "$controllerName not found";
-die;
+    die;
 }
 
 catch (Exception $ex) {
@@ -71,12 +71,21 @@ function autoLoad($className)
     if($path == null)
         $path = APPPATH;
 
-    autoLoader($className, APPPATH);
+    // Load library classes
+    autoLoader($className, APPPATH.DS."library");
+
+    // Get some info so we can load the proper module.
+    // These values are parsed now every time they are accessed. We can do better and need to take some lil time to fix this.
+    $query = FrontController::getUrlQuery();
+    $modules = Config::getModules();
+    $route = Route::getRoutingParts($query, $modules);
+
+    // load classes inside the correct module
+    autoLoader($className, APPPATH.DS."application".DS.$route["module"]);
 }
 
 function autoLoader($className, $path)
 {
-
     $handle = opendir($path);
     while (false !== ($file = readdir($handle))) {
 

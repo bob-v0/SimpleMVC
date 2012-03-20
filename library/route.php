@@ -19,8 +19,13 @@ class Route
 
         // controller
         $controllerName = ucfirst($controller.'Controller');
+
+        //if(!class_exists($controllerName))
+        //    echo "not exists: SimpleMVC\\Modules\\Module1\\$controllerName<br />";
+
+
         if(!class_exists($controllerName))
-            throw new ControllerNotFoundException($controllerName);
+            throw new ControllerNotFoundException($module."\\".$controllerName);
 
         $this->controller = new $controllerName($module);
         $this->action = ucfirst($action).'Action';
@@ -62,6 +67,17 @@ class Route
 
     public static function create($q, $modules)
     {
+
+        $route = self::getRoutingParts($q, $modules);
+
+        // return array($route, $modules);
+        $routeObj = new Route($route['module'], $route['controller'], $route['action'], $route['query']);
+        return $routeObj;
+    }
+
+    public static function getRoutingParts($q, $modules)
+    {
+        $route = array();
         $route['module'] = "default";
         $route['controller'] = "index";
         $route['action'] = "index";
@@ -76,9 +92,7 @@ class Route
         if (!empty($q[1])) $route['controller'] = $q[1];
         if (!empty($q[2])) $route['action'] = $q[2];
         $route['query'] = $query;
-        // return array($route, $modules);
-        $routeObj = new Route($route['module'], $route['controller'], $route['action'], $route['query']);
-        return $routeObj;
+        return $route;
     }
 }
 

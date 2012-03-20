@@ -17,7 +17,6 @@ class IndexController extends Controller
 
     function indexAction()
     {
-
         $this->view->loadTemplate("main");
         $this->view->load('index_index', 'content');
         return $this->view->render();
@@ -53,4 +52,8 @@ class IndexController extends Controller
         return ob_get_clean();
     }
 
+    function someAction()
+    {
+        echo "test";
+    }
 }
