@@ -38,27 +38,39 @@ try
     $fc->run();
 }
 
-// todo: refector to a single routingexception that describes the problem
+// todo: refactor to a single routing exception that describes the problem
 catch (ActionNotFoundException $ex) {
     $action = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
-    echo "$action not found";
+    if(DEV_ENV)
+        echo "$action not found";
+    else
+        echo "Page not found";
     die;
 }
 
 catch (ControllerNotFoundException $ex) {
     $controllerName = $ex->getMessage();
     header("HTTP/1.0 404 Not Found");
-    echo "$controllerName not found";
+    if(DEV_ENV)
+        echo "$controllerName not found";
+    else
+        echo "Page not found";
     die;
 }
 
 catch (Exception $ex) {
-    // todo: place the error control & view to its own handler(s)
-    echo "Fatal error: ".$ex->getMessage();
-    echo "<hr />\n";
-    echo "<pre>StackTrace: \n";
-    echo $ex->getTraceAsString();
+    if(DEV_ENV) {
+        // todo: place the error control & view to its own handler(s)
+        echo "Fatal error: ".$ex->getMessage();
+        echo "<hr />\n";
+        echo "<pre>StackTrace: \n";
+        echo $ex->getTraceAsString();
+    }
+    else {
+        echo "An fatal error occurred. Our development team should be automatically notified. Our apology for any inconvenience.";
+        // todo: fatal error handler thing so you can easly add functionality with custom requirements.
+    }
 }
 
 
