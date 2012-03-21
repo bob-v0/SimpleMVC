@@ -1,0 +1,5 @@
+- Maybe start using PHP namespaces.
+
+- Provide something to handle 404 pages (aside of displaying an error page).
+  This way we can easily log and/or email links that do not exist anymore.
+  Actual implementation is unclear for the use of images and other non code related resources.
