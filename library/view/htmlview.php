@@ -5,6 +5,7 @@
 class HtmlView extends View {
 
     protected $_title = "";
+    protected $view = null;
 
     public function setTitle($title = "") {
         $this->_title = $title;
@@ -23,9 +24,39 @@ class HtmlView extends View {
 
     public function render(array $data = null) {
 
-        if(is_array($data)) {
-            foreach($data as $key => $value) {
-                if(is_array($value))
+        $this->ImportVariablesIntoView($data);
+        // todo: to view items
+        $this->ImportSnipitsIntoView();
+        $this->ImportTemplateIntoView();
+        // todo: add debug toolbar to html view renderer
+        return $this->_view;
+    }
+
+    protected function ImportTemplateIntoView()
+    {
+        ob_start();
+
+        if ($this->_template != null)
+            require_once($this->_template);
+
+        $this->_view = ob_get_clean();
+    }
+
+    protected function ImportSnipitsIntoView()
+    {
+        foreach ($this->_file as $key => $snippet) {
+            ob_start();
+            require_once($snippet);
+            $this->$key = ob_get_clean();
+        }
+    }
+
+    // todo: move to base class
+    protected function ImportVariablesIntoView($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (is_array($value))
                     $this->$key = array_map('htmlentities', $value);
                 else
                     $this->$key = htmlentities($value);
@@ -34,38 +65,7 @@ class HtmlView extends View {
 
         $this->view = $this;
 
-        //var_dump($data);
-
         unset($data);
-
-        // todo: to view items
-
-
-        $snips = array();
-
-        foreach($this->_file as $key => $snippet) {
-            ob_start();
-            require_once($snippet);
-            $this->$key = ob_get_clean();
-        }
-
-
-
-        //var_dump($snips);
-
-
-        ob_start();
-
-        if($this->_template != null)
-            require_once($this->_template);
-
-        $this->_view = ob_get_clean();
-
-
-        //echo "<hr />".$data."<hr />";
-
-
-        return $this->_view;
     }
 }
  

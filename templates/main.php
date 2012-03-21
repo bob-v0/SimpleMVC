@@ -11,7 +11,7 @@
     <script language="JavaScript" type="text/javascript" src="<?php echo BASE_URL; ?>/js/main.js"></script>
 </head>
 
-<body>
+<body id="body">
 <div class="border_outer">
     <div id="logo"><img alt="btn" src="<?php echo BASE_URL; ?>/img/logo.png" /></div>
     <div style="float: right; padding-top: 5px; padding-right: 5px;"><img alt="btn" src="<?php echo BASE_URL; ?>/img/button02.png" />&nbsp;<img alt="btn" src="<?php echo BASE_URL; ?>/img/button02.png" />&nbsp;<img alt="btn" src="<?php echo BASE_URL; ?>/img/button02.png" /></div>
@@ -27,7 +27,7 @@
             .aa a {color: #2e89e4; text-decoration: none;}
             .ab {float: right; padding-top: 15px;}
         </style>
-        <div class="aa"><p><a href="">Home</a></p></div> <div class="aa"><p><a href="">Services</a></p></div> <div class="aa"><p><a href="">Support</a></p></div> <div class="aa aa_last"><p><a href="">Contact</a></p></div>
+        <div class="aa"><p><a href="<?php echo BASE_URL; ?>">Home</a></p></div> <div class="aa"><p><a href="<?php echo BASE_URL."/services" ?>">Services</a></p></div> <div class="aa"><p><a href="<?php echo BASE_URL."/support" ?>">Support</a></p></div> <div class="aa aa_last"><p><a href="<?php echo BASE_URL."/contact" ?>">Contact</a></p></div>
         <div class="ab">
             <form><input id="search_text" type="text" value="search site" /> <input type="button" value="search" /></form>
         </div>
